@@ -1,0 +1,321 @@
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Mr+Dafoe&display=swap');
+
+@font-face {
+    font-family: "Akrobat-Bold";
+    font-style: normal;
+    font-weight: normal;
+    src: local("Akrobat-Bold"), url("fonts/Akrobat-Bold.otf") format("otf");
+}
+
+@font-face {
+    font-family: "Akrobat-Black";
+    font-style: normal;
+    font-weight: normal;
+    src: local("Akrobat-Black"), url("fonts/Akrobat-Black.otf") format("otf");
+}
+
+* {
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-drag: none;
+    outline: none;
+}
+
+.Background {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.Header {
+    position: absolute;
+    display: flex;
+
+    width: 497px;
+    height: 97px;
+
+    left: 35%;
+    top: 30%;
+}
+
+.Title {
+    position: absolute;
+
+    width: 497px;
+    height: 59px;
+
+    text-align: center;
+
+    font-family: "Alfa Slab One";
+    font-weight: 400;
+    font-size: 56px;
+    line-height: 147%;
+    letter-spacing: -0.01em;
+    text-align: center;
+    color: #00a3ff;
+}
+
+.Title2 {
+    position: absolute;
+
+    width: 497px;
+    height: 59px;
+
+    text-align: center;
+    bottom: 0%;
+
+    font-family: "Mr Dafoe";
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 117%;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 0 20px 0 #000;
+}
+
+.Close {
+    position: absolute;
+    text-align: center;
+    cursor: pointer;
+
+    transition: 100ms ease-in-out;
+
+    width: 28px;
+    height: 28px;
+
+    font-family: "Akrobat-Bold";
+    font-weight: 900;
+    font-size: 18px;
+
+    right: 5%;
+    top: 20%;
+
+    background: #CE0000;
+    border-radius: 2px;
+    border: 1px solid #CE0000;
+}
+
+.Close:hover {
+    transition: .15s;
+    transform: scale(1.05);
+}
+
+.Close:active {
+    transform: scale(0.9);
+}
+
+.Information {
+    position: absolute;
+    display: flex;
+
+    width: 426px;
+    height: 50px;
+
+    left: 37%;
+    top: 39.5%;
+}
+
+.InformationText {
+    position: absolute;
+    
+    text-align: center;
+
+    font-family: "Akrobat-Bold";
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 117%;
+    text-align: center;
+    color: #a0a0a0;
+}
+
+.Inputs {
+    position: absolute;
+    display: flex;
+
+    width: 342px;
+    height: 169px;
+
+    left: 39%;
+    top: 45.5%;
+}
+
+.VornameInput {
+    position: absolute;
+    
+    font-family: "Akrobat-Black";
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: #fff;
+
+    width: 342px;
+    height: 62px;
+
+    padding: 6px 0 0 60px;
+
+    border-radius: 2px;
+    border: 1px solid rgb(39, 39, 39);
+    background: radial-gradient(88.28% 141.42% at 100% 100%, rgb(84, 84, 84) 0%, rgb(39, 39, 39) 100%), radial-gradient(88.28% 141.42% at 0% 0%, rgb(62, 62, 62) 0%, rgb(70, 70, 70) 100%);
+}
+
+.VornameICON {
+    position: absolute;
+    display: flex;
+    left: 3%;
+    top: 12%;
+}
+
+.VornameText {
+    position: absolute;
+    display: flex;
+
+    left: 18%;
+    top: 9.5%;
+
+    font-family: "Akrobat-Black";
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.VornameFalse {
+    position: absolute;
+    display: flex;
+
+    right: 5%;
+    top: 15%;
+
+    width: 20.88px;
+    height: 21.55px;
+}
+
+.NachnameInput {
+    position: absolute;
+    bottom: 0%;
+    
+    font-family: "Akrobat-Black";
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: #fff;
+
+    width: 342px;
+    height: 62px;
+
+    padding: 6px 0 0 60px;
+
+    border-radius: 2px;
+    border: 1px solid rgb(39, 39, 39);
+    background: radial-gradient(88.28% 141.42% at 100% 100%, rgb(84, 84, 84) 0%, rgb(39, 39, 39) 100%), radial-gradient(88.28% 141.42% at 0% 0%, rgb(62, 62, 62) 0%, rgb(70, 70, 70) 100%);
+}
+
+.NachnameICON {
+    position: absolute;
+    display: flex;
+    left: 3%;
+    bottom: 12%;
+}
+
+.NachnameText {
+    position: absolute;
+    display: flex;
+
+    left: 18%;
+    bottom: 23%;
+
+    font-family: "Akrobat-Black";
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.NachnameFalse {
+    position: absolute;
+    display: flex;
+
+    right: 5%;
+    bottom: 15%;
+
+    width: 20.88px;
+    height: 21.55px;
+}
+
+.PriceFrame {
+    position: absolute;
+    display: flex;
+
+    width: 342px;
+    height: 37px;
+    
+    left: 39%;
+    top: 65%;
+}
+
+.Frame {
+    position: absolute;
+    display: flex;
+
+    width: 136px;
+    height: 37px;
+    background: linear-gradient(133deg, rgba(0, 108, 122, 0.05) 0.01%, rgba(0, 108, 122, 0.55) 50.5%, rgba(0, 108, 122, 0) 100%);
+
+    left: 30%;
+}
+
+.Price {
+    position: absolute;
+    text-align: center;
+
+    padding-top: 6px;
+
+    width: 342px;
+    height: 37px;
+
+    font-family: "Akrobat-Black";
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    text-align: center;
+    color: #00aeff;
+}
+
+.Confirm {
+    position: absolute;
+    cursor: pointer;
+    text-align: center;
+    transition: 100ms ease-in-out;
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 342px;
+    height: 62px;
+
+    left: 39%;
+    top: 72%;
+
+    border-radius: 2px;
+    border: 1px solid #06a7f2;
+    background: radial-gradient(
+        circle at center,
+        #06a7f2 0%,
+        #003653 100%
+    );
+
+    font-family: "Akrobat-Black";
+    font-weight: 900;
+    font-size: 17px;
+    letter-spacing: 0.08em;
+    text-align: center;
+    color: #fff;
+}
+
+.Confirm:hover {
+    transform: scale(1.1);
+}
+
+.Confirm:active {
+    transform: scale(.9);
+}
