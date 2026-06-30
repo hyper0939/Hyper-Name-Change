@@ -9,6 +9,7 @@ client_scripts {
 }
 
 server_scripts {
+    "@oxmysql/lib/MySQL.lua",
     "Code/server-side.lua"
 }
 
@@ -25,3 +26,5 @@ files {
     "UI/*.otf",
     "UI/images/*.png"
 }
+
+lua54 "yes"
