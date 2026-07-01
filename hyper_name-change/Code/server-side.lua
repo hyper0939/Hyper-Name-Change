@@ -13,7 +13,7 @@ local function Log(title, description, color)
                 title = title,
                 description = description,
                 color = color or 65280,
-                footer = { text = os.date("%d.%m.%Y %H:%M:%s") }
+                footer = { text = os.date("%d.%m.%Y %H:%M:%S") }
             }
         }
     }), { ["Content-Type"] = "application/json" })
@@ -56,27 +56,14 @@ local function ValidateName(name)
 end
 
 local function CapitalizeName(name)
-    return name:gsub(1, 1):upper() .. name:sub(2):lower()
+    return name:sub(1, 1):upper() .. name:sub(2):lower()
 end
 
-local function ParseDate(date)
-    if not date then return nil end
+local function GetCooldownDays(timestamp)
+    timestamp = tonumber(timestamp)
+    if not timestamp or timestamp == 0 then return 0 end
 
-    return os.time({
-        year = tonumber(date:sub(1, 4)),
-        month = tonumber(date:sub(6, 7)),
-        day = tonumber(date:sub(9, 10)),
-        hour = tonumber(date:sub(12, 13)) or 0,
-        min = tonumber(date:sub(15, 16)) or 0,
-        sec = tonumber(date:sub(18, 19)) or 0,
-    })
-end
-
-local function GetCooldownDays(date)
-    local lastChange = ParseDate(date)
-    if not lastChange then return 0 end
-
-    local cooldownEnds = lastChange + (Config.Cooldown * 86400)
+    local cooldownEnds = timestamp + (Config.Cooldown * 86400)
     local now = os.time()
 
     if now >= cooldownEnds then return 0 end
@@ -109,11 +96,12 @@ ESX.RegisterServerCallback("hyper_namechange:GetData", function(source, cb)
     local xPlayer = ESX.GetPlayerFromId(source)
     if not xPlayer then cb(false) return end
 
-    MySQL.Async.fetchScalar("SELECT namechange_date FROM users WHERE identifier = @identifier", {
+    MySQL.Async.fetchScalar("SELECT UNIX_TIMESTAMP(namechange_date) AS ts, firstname, lastname FROM users WHERE identifier = @identifier", {
         ["@identifier"] = xPlayer.identifier
-    }, function(date)
+    }, function(result)
+        local row = result and result[1]
         local money = Config.Account == "bank" and xPlayer.getAccount("bank").money or xPlayer.getMoney()
-        local hasItem = Config.Item and HasNamechangeItem(source, xPlayer) or true
+        local hasItem = Config.UseItem and HasNamechangeItem(source, xPlayer) or true
 
         cb({
             price = Config.Price,
@@ -122,11 +110,11 @@ ESX.RegisterServerCallback("hyper_namechange:GetData", function(source, cb)
             useItem = Config.UseItem,
             item = Config.Item,
             hasItem = hasItem,
-            cooldown = GetCooldownDays(date),
+            cooldown = GetCooldownDays(row and row.ts),
             minLength = Config.MinLength,
             maxLength = Config.MaxLength,
-            firstname = xPlayer.get("firstname") or xPlayer.getName(),
-            lastname = xPlayer.get("lastname") or ""
+            firstname = (row and row.firstname) or "",
+            lastname = (row and row.lastname) or ""
         })
     end)
 end)
@@ -154,10 +142,12 @@ RegisterNetEvent("hyper_namechange:Confirm", function(firstname, lastname)
     local newFirstName = CapitalizeName(firstResult)
     local newLastName = CapitalizeName(lastResult)
 
-    MySQL.Async.fetchScalar("SELECT namechange_date FROM users WHERE identifier = @identifier", {
+    MySQL.Async.fetchScalar("SELECT UNIX_TIMESTAMP(namechange_date) AS ts, firstname, lastname FROM users WHERE identifier = @identifier", {
         ["@identifier"] = xPlayer.getIdentifier()
-    }, function(date)
-        if GetCooldownDays(date) > 0 then
+    }, function(result)
+        local row = result and result[1]
+
+        if GetCooldownDays(row and row.ts) > 0 then
             TriggerClientEvent("hyper_namechange:Result", src, false, "cooldown")
             return
         end
@@ -176,8 +166,8 @@ RegisterNetEvent("hyper_namechange:Confirm", function(firstname, lastname)
             end
         end
 
-        local oldFirstName = xPlayer.get("firstname") or xPlayer.getName()
-        local oldLastName = xPlayer.get("lastname") or ""
+        local oldFirstName = (row and row.firstname) or ""
+        local oldLastName = (row and row.lastname) or ""
 
         if Config.UseItem then
             RemoveNamechangeItem(src, xPlayer)
@@ -190,7 +180,7 @@ RegisterNetEvent("hyper_namechange:Confirm", function(firstname, lastname)
         MySQL.Async.execute("UPDATE users SET firstname = @firstname, lastname = @lastname, namechange_date = NOW() WHERE identifier = @identifier", {
             ["@firstname"] = newFirstName,
             ["@lastname"] = newLastName,
-            ["@identifier"] = xPlayer.getIdentifier()
+            ["@identifier"] = xPlayer.getIdentifier
         }, function()
             xPlayer.set("firstname", newFirstName)
             xPlayer.set("lastname", newLastName)
@@ -201,7 +191,7 @@ RegisterNetEvent("hyper_namechange:Confirm", function(firstname, lastname)
                 "Namechange",
                 ("**Player:** %s (`%s`)\n**Old:** %s %s\n**New:** %s %s"):format(
                     GetPlayerName(src) or "Unkown",
-                    xPlayer.identifier(),
+                    xPlayer.identifier,
                     oldFirstName, oldLastName,
                     newFirstName, newLastName
                 ),

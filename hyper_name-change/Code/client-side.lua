@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global, param-type-mismatch
 local ESX = exports['es_extended']:getSharedObject()
 
 local isOpen = false
@@ -114,6 +115,7 @@ RegisterNetEvent("hyper_namechange:Result", function(success, reason)
                     type = "success"
                 })
         end
+        CloseUI()
     else
         if Config.CustomNotify then
                 Config.Notify(Config.Languages["notify_title"], ErrorMessages[reason] or Config.Languages["smth_happend"], Config.Languages["notify_type-error"], 5000)
