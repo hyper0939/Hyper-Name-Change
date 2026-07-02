@@ -30,7 +30,7 @@ local function OpenUI()
             else
                 lib.notify({
                     title = Config.Languages["notify_title"],
-                    description = Config.Languages["cooldown_error"]:format(data.cooldown),
+                    description = Config.Languages["item_error"]:format(data.item),
                     type = "error"
                 })
             end
@@ -101,7 +101,8 @@ local ErrorMessages = {
     cooldown = Config.Languages["cooldown_error2"],
     no_money = Config.Languages["no_money_error"],
     no_item = (Config.Languages["no_item_error"]):format(Config.Item),
-    invalid_type = Config.Languages["invalid_type_error"]
+    invalid_type = Config.Languages["invalid_type_error"],
+    same_name = Config.Languages["same_name"]
 }
 
 RegisterNetEvent("hyper_namechange:Result", function(success, reason)
@@ -127,6 +128,7 @@ RegisterNetEvent("hyper_namechange:Result", function(success, reason)
                 })
             end
         SendNUIMessage({ action = "Error", field = reason })
+        CloseUI()
     end
 end)
 
@@ -165,9 +167,14 @@ CreateThread(function()
     RequestModel(model)
 
     local Timeout = 0
-    while not HasModelLoaded(modl) do
+    while not HasModelLoaded(model) do
         Wait(10)
         Timeout = Timeout + 1
+
+        if Timeout > 300 then
+            print("ERROR MODEL: " .. Confng.NPC.Model .. " konnte nicht geladen werden")
+            return
+        end
     end
 
     npcEntity = CreatePed(4, model, Config.NPC.Coords.x, Config.NPC.Coords.y, Config.NPC.Coords.z - 1.0, Config.NPC.Heading or 0.0, false, true)
@@ -176,6 +183,7 @@ CreateThread(function()
     FreezeEntityPosition(npcEntity, true)
     SetBlockingOfNonTemporaryEvents(npcEntity, true)
     SetEntityAsMissionEntity(npcEntity, true, true)
+    SetModelAsNoLongerNeeded(model)
 
     if GetResourceState("ox_target") == "started" then
         exports.ox_target:addLocalEntity(npcEntity, {
@@ -204,13 +212,15 @@ CreateThread(function()
             sleep = 0
 
             if dist < 2.0 then
-                DrawMarker(2,
+                DrawMarker(Config.DrawMarker.Type,
                     Config.NPC.Coords.x, Config.NPC.Coords.y, Config.NPC.Coords.z + 1.0,
                     0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                     0.3, 0.3, 0.3,
-                    0, 163, 255, 150,
-                    false, true, 2, false, nil, nil, false
+                    0, Config.DrawMarker.R, Config.DrawMarker.G, Config.DrawMarker.B,
+                    Config.DrawMarker.UpAndDown, true, 2, false, nil, nil, false
                 )
+
+                Config.HelpNotifcation()
 
                 if IsControlJustPressed(0, 38) then
                     TriggerEvent("hyper_namechange:Open")

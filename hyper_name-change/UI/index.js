@@ -19,20 +19,24 @@ function UpdateValidationIcon($input, $icon) {
 }
 
 function ResetUI() {
-    $("InformationText").text("");
-    $("VornameInput").removeClass("InputError");
-    $("NachnameInput").removeClass("InputError");
+    $(".InformationText").text("");
+    $(".VornameInput").removeClass("InputError");
+    $(".NachnameInput").removeClass("InputError");
 }
 
 $(document).ready(function() {
     $(".container").hide();
 
     $("VornameInput").on("input", function() {
-        UpdateValidationIcon($(this), $(".VornameFalse"));
+        const val = $(this).val().trim();
+        const valid = val.length >= minLength && val.length <= maxLength && /^[A-Za-zÄÖÜäöüß]+$/.test(val);
+        $(".VornameFalse").attr("src", val.length === 0 ? "images/False.png" : valid ? "images/True.png" : "images/False.png");
     });
 
     $("NachnameInput").on("input", function() {
-        UpdateValidationIcon($(this), $(".NachnameFalse"));
+        const val = $(this).val().trim();
+        const valid = val.length >= minLength && val.length <= maxLength && /^[A-Za-zÄÖÜäöüß]+$/.test(val);
+        $(".NachnameFalse").attr("src", val.length === 0 ? "images/False.png" : valid ? "images/True.png" : "images/False.png");
     });
 
     $(".Close").on("click", function() {
@@ -48,6 +52,14 @@ $(document).ready(function() {
             $(".InformationText").text(`Bitte gib einen gültigen Vor- und Nachnamen ein (${minLength}-${maxLength} Zeichen, nur Buchstaben).`);
             UpdateValidationIcon($(".VornameInput"), $(".VornameFalse"));
             UpdateValidationIcon($(".NachnameInput"), $(".NachnameFalse"));
+            return;
+        }
+
+        const currentFirstname = $(".VornameInput").data("original");
+        const currentLastname = $(".NachnameInput").data("original");
+
+        if (firstname.toLowerCase() === currentFirstname?.toLowerCase() && currentLastname.toLowerCase() === currentLastname?.toLowerCase()) {
+            $(".InformationText").text("Du hast deinen Namen nicht geändert.");
             return;
         }
 
@@ -73,11 +85,10 @@ $(document).ready(function() {
             minLength = data.minLength || 3;
             maxLength = data.maxLength || 15;
 
-            $(".VornameInput").val(data.firstname || "");
-            $(".NachnameInput").val(data.lastname || "");
-
-            UpdateValidationIcon($(".VornameInput"), $(".VornameFalse"));
-            UpdateValidationIcon($(".NachnameInput"), $(".NachnameFalse"));
+            $(".VornameInput").val(data.firstname || "").data("original", data.firstname || "");
+            $(".NachnameInput").val(data.lastname || "").data("original", data.lastname || "");
+            $(".VornameInput").trigger("input");
+            $(".NachnameInput").trigger("input");
 
             if (data.useItem) {
                 $(".Price").text(`Item: ${data.item}`);
@@ -86,7 +97,6 @@ $(document).ready(function() {
             }
 
             $(".container").show();
-            $(".VornameInput").trigger("focus");
 
         } else if (data.action === "Hide") {
             $(".container").hide();

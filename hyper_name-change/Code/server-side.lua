@@ -96,7 +96,7 @@ ESX.RegisterServerCallback("hyper_namechange:GetData", function(source, cb)
     local xPlayer = ESX.GetPlayerFromId(source)
     if not xPlayer then cb(false) return end
 
-    MySQL.Async.fetchScalar("SELECT UNIX_TIMESTAMP(namechange_date) AS ts, firstname, lastname FROM users WHERE identifier = @identifier", {
+    MySQL.Async.fetchAll("SELECT UNIX_TIMESTAMP(namechange_date) AS ts, firstname, lastname FROM users WHERE identifier = @identifier", {
         ["@identifier"] = xPlayer.identifier
     }, function(result)
         local row = result and result[1]
@@ -142,10 +142,15 @@ RegisterNetEvent("hyper_namechange:Confirm", function(firstname, lastname)
     local newFirstName = CapitalizeName(firstResult)
     local newLastName = CapitalizeName(lastResult)
 
-    MySQL.Async.fetchScalar("SELECT UNIX_TIMESTAMP(namechange_date) AS ts, firstname, lastname FROM users WHERE identifier = @identifier", {
-        ["@identifier"] = xPlayer.getIdentifier()
+    MySQL.Async.fetchAll("SELECT UNIX_TIMESTAMP(namechange_date) AS ts, firstname, lastname FROM users WHERE identifier = @identifier", {
+        ["@identifier"] = xPlayer.identifier
     }, function(result)
         local row = result and result[1]
+
+        if row and newFirstName == row.firstname and newLastName == row.lastname then
+            TriggerClientEvent("hyper_namechange:Result", src, false, "same_name")
+            return
+        end
 
         if GetCooldownDays(row and row.ts) > 0 then
             TriggerClientEvent("hyper_namechange:Result", src, false, "cooldown")
@@ -180,8 +185,15 @@ RegisterNetEvent("hyper_namechange:Confirm", function(firstname, lastname)
         MySQL.Async.execute("UPDATE users SET firstname = @firstname, lastname = @lastname, namechange_date = NOW() WHERE identifier = @identifier", {
             ["@firstname"] = newFirstName,
             ["@lastname"] = newLastName,
-            ["@identifier"] = xPlayer.getIdentifier
-        }, function()
+            ["@identifier"] = xPlayer.identifier
+        }, function(rowsChanged)
+            print("Rows updated:" .. tostring(rowsChanged))
+
+            if rowsChanged == 0 then
+                print("WARNING: Kein Eintrag gefunden für " .. xPlayer.identifier)
+                return
+            end
+
             xPlayer.set("firstname", newFirstName)
             xPlayer.set("lastname", newLastName)
 

@@ -1,6 +1,6 @@
 Config = {}
 
-Config.Framework = "ESX"
+local ESX = exports['es_extended']:getSharedObject()
 
 Config.Price = 6700
 Config.Account = "money" -- money | bank
@@ -16,7 +16,7 @@ Config.MaxLength = 15
 Config.AllowGermanLetters = true
 
 Config.DiscordLogs = true
-Config.Webhook = ""
+Config.Webhook = "https://discord.com/api/webhooks/1521936397919977668/hyLnTt-Trgl2a3psmMXG1Bh9E08ConpukoWt06vL31b_mRKXbbEQIaYeIDxtSbAu7gYU"
 
 Config.ReloadCharacter = false
 
@@ -38,9 +38,24 @@ Config.Blacklist = {
 Config.NPC = {
     Enabled = true,
     Model = "a_m_y_business_01",
-    Coords = vector3(414.7470, -1631.8112, 29.2919),
-    Heading = 139.7066
+    Coords = vector3(416.20, -1629.10, 29.29),
+    Heading = 142.09
 }
+
+-- If you're not using ox_lib then this gonna be activated
+--#region
+Config.DrawMarker = {
+    R = 163,
+    G = 255,
+    B = 150,
+    UpAndDown = true,
+    Type = 2
+}
+
+Config.HelpNotifcation = function()
+    ESX.ShowHelpNotification("Drücke E, um dein Name zu ändern.", false, false, 0)
+end
+--#endregion
 
 Config.CustomNotify = true -- if false then ox_lib
 Config.Notify = function(title, message, type, time)
@@ -64,5 +79,7 @@ Config.Languages = {
     ["invalid_type_error"] = "Ungültige Eingabe",
 
     ["success"] = "Dein Name wurde erfolgreich geändert.",
-    ["smth_happend"] = "Ein Fehler ist aufgetreten"
+    ["smth_happend"] = "Ein Fehler ist aufgetreten",
+
+    ["same_name"] = "Dein neuer Name ist identisch mit deinem aktuellen Namen.",
 }

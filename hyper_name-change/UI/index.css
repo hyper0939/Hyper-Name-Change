@@ -165,7 +165,7 @@
     position: absolute;
     display: flex;
     left: 3%;
-    top: 12%;
+    top: 11%;
 }
 
 .VornameText {
@@ -173,7 +173,7 @@
     display: flex;
 
     left: 18%;
-    top: 8%;
+    top: 7%;
 
     font-family: "Akrobat-Black";
     font-weight: 900;
@@ -217,7 +217,7 @@
     position: absolute;
     display: flex;
     left: 3%;
-    bottom: 12%;
+    bottom: 11%;
 }
 
 .NachnameText {
@@ -225,7 +225,7 @@
     display: flex;
 
     left: 18%;
-    bottom: 23%;
+    bottom: 24%;
 
     font-family: "Akrobat-Black";
     font-weight: 900;
@@ -288,7 +288,7 @@
     position: absolute;
     cursor: pointer;
     text-align: center;
-    transition: 100ms ease-in-out;
+    transition: 150ms ease-in-out;
     appearance: none;
     -webkit-appearance: none;
 
@@ -315,6 +315,7 @@
 }
 
 .Confirm:hover {
+    transition: 200ms;
     transform: scale(1.1);
 }
 
