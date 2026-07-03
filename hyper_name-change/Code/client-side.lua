@@ -185,22 +185,26 @@ CreateThread(function()
     SetEntityAsMissionEntity(npcEntity, true, true)
     SetModelAsNoLongerNeeded(model)
 
-    if GetResourceState("ox_target") == "started" then
-        exports.ox_target:addLocalEntity(npcEntity, {
-            {
-                name = "hyper_namechange",
-                icon = "fa-solid fa-pen",
-                label = "Namechange", -- Languages
-                onSelect = function()
-                    TriggerEvent("hyper_namechange:Open")
-                end
-            }
-        })
+    if Config.UseLib then
+        if GetResourceState("ox_target") == "started" then
+            exports.ox_target:addLocalEntity(npcEntity, {
+                {
+                    name = "hyper_namechange",
+                    icon = Config.Languages["icon"],
+                    label = Config.Languages["ox_target_label"],
+                    onSelect = function()
+                        TriggerEvent("hyper_namechange:Open")
+                    end
+                }
+            })
+        else
+            print("OX TARGET IS NOT STARTED")
+        end
     end
 end)
 
 CreateThread(function()
-    if GetResourceState("ox_target") == "started" then return end
+    if Config.UseLib then return end
 
     while true do
         local sleep = 1000

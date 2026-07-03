@@ -41,7 +41,7 @@ $(document).ready(function() {
 
     $(".Close").on("click", function() {
         $.post(`https://${GetParentResourceName()}/Close`, JSON.stringify({}));
-        $(".container").hide();
+        $(".container").fadeOut(500);
     });
 
     $(".Confirm").on("click", function() {
@@ -96,10 +96,10 @@ $(document).ready(function() {
                 $(".Price").text(`${Number(data.price).toLocaleString("de-DE")}$`);
             }
 
-            $(".container").show();
+            $(".container").fadeIn(500);
 
         } else if (data.action === "Hide") {
-            $(".container").hide();
+            $(".container").fadeOut(500);
         } else if (data.action === "Error") {
         }
     });

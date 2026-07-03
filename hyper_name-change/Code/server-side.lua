@@ -207,7 +207,7 @@ RegisterNetEvent("hyper_namechange:Confirm", function(firstname, lastname)
                     oldFirstName, oldLastName,
                     newFirstName, newLastName
                 ),
-                3066993
+                16759040
             )
 
             if Config.ReloadCharacter then

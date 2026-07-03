@@ -1,9 +1,9 @@
 Config = {}
 
-local ESX = exports['es_extended']:getSharedObject()
+local ESX = exports["es_extended"]:getSharedObject()
 
 Config.Price = 6700
-Config.Account = "money" -- money | bank
+Config.Account = "moeny" -- money | bank
 
 Config.UseItem = false
 Config.Item = "namechange"
@@ -15,8 +15,8 @@ Config.MaxLength = 15
 
 Config.AllowGermanLetters = true
 
-Config.DiscordLogs = true
-Config.Webhook = "https://discord.com/api/webhooks/1521936397919977668/hyLnTt-Trgl2a3psmMXG1Bh9E08ConpukoWt06vL31b_mRKXbbEQIaYeIDxtSbAu7gYU"
+Config.DiscordLogs = false
+Config.Webhook = ""
 
 Config.ReloadCharacter = false
 
@@ -42,7 +42,7 @@ Config.NPC = {
     Heading = 142.09
 }
 
--- If you're not using ox_lib then this gonna be activated
+Config.UseLib = false -- If you"re not using ox_lib then this gonna be activated
 --#region
 Config.DrawMarker = {
     R = 163,
@@ -53,7 +53,7 @@ Config.DrawMarker = {
 }
 
 Config.HelpNotifcation = function()
-    ESX.ShowHelpNotification("Drücke E, um dein Name zu ändern.", false, false, 0)
+    ESX.ShowHelpNotification("Drücke ~b~E~w~, um dein Name zu ändern.", false, false, 0)
 end
 --#endregion
 
@@ -82,4 +82,7 @@ Config.Languages = {
     ["smth_happend"] = "Ein Fehler ist aufgetreten",
 
     ["same_name"] = "Dein neuer Name ist identisch mit deinem aktuellen Namen.",
+
+    ["ox_target_label"] = "Namechange",
+    ["icon"] = "fa-solid fa-pen"
 }
