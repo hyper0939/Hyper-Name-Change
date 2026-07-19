@@ -3,7 +3,7 @@ Config = {}
 local ESX = exports["es_extended"]:getSharedObject()
 
 Config.Price = 6700
-Config.Account = "moeny" -- money | bank
+Config.Account = "money" -- money | bank
 
 Config.UseItem = false
 Config.Item = "namechange"

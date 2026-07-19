@@ -123,8 +123,8 @@ RegisterNetEvent("hyper_namechange:Result", function(success, reason)
             else
                 lib.notify({
                     title = Config.Languages["notify_title"],
-                    description = Config.Languages["success"],
-                    type = "success"
+                    description = ErrorMessages[reason] or Config.Languages["smth_happend"],
+                    type = "error"
                 })
             end
         SendNUIMessage({ action = "Error", field = reason })
@@ -172,7 +172,7 @@ CreateThread(function()
         Timeout = Timeout + 1
 
         if Timeout > 300 then
-            print("ERROR MODEL: " .. Confng.NPC.Model .. " konnte nicht geladen werden")
+            print("ERROR MODEL: " .. Config.NPC.Model .. " konnte nicht geladen werden")
             return
         end
     end

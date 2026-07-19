@@ -27,13 +27,13 @@ function ResetUI() {
 $(document).ready(function() {
     $(".container").hide();
 
-    $("VornameInput").on("input", function() {
+    $(".VornameInput").on("input", function() {
         const val = $(this).val().trim();
         const valid = val.length >= minLength && val.length <= maxLength && /^[A-Za-zÄÖÜäöüß]+$/.test(val);
         $(".VornameFalse").attr("src", val.length === 0 ? "images/False.png" : valid ? "images/True.png" : "images/False.png");
     });
 
-    $("NachnameInput").on("input", function() {
+    $(".NachnameInput").on("input", function() {
         const val = $(this).val().trim();
         const valid = val.length >= minLength && val.length <= maxLength && /^[A-Za-zÄÖÜäöüß]+$/.test(val);
         $(".NachnameFalse").attr("src", val.length === 0 ? "images/False.png" : valid ? "images/True.png" : "images/False.png");
@@ -58,7 +58,7 @@ $(document).ready(function() {
         const currentFirstname = $(".VornameInput").data("original");
         const currentLastname = $(".NachnameInput").data("original");
 
-        if (firstname.toLowerCase() === currentFirstname?.toLowerCase() && currentLastname.toLowerCase() === currentLastname?.toLowerCase()) {
+        if (firstname.toLowerCase() === currentFirstname?.toLowerCase() && lastname.toLowerCase() === currentLastname?.toLowerCase()) {
             $(".InformationText").text("Du hast deinen Namen nicht geändert.");
             return;
         }
